@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
+import '../controllers/authentecation.dart';
 import 'input_widget.dart';
 import 'register.dart';
-
 class Login extends StatefulWidget {
   const Login({super.key});
-
   @override
   State<Login> createState() => _LoginState();
 }
+final AuthenticationController _authenticationController = Get.put(AuthenticationController ());
 TextEditingController _usernameController = TextEditingController();
 TextEditingController _passwordController = TextEditingController();
 class _LoginState extends State<Login> {
@@ -41,14 +40,23 @@ class _LoginState extends State<Login> {
                   obscureText: true,
                   hintText: 'password',),
                   const SizedBox(height: 15),
-                  InkWell(
-                    onTap:(){},
-                    child: Container(padding:const EdgeInsets.only(top: 15, bottom: 15, right: 35, left: 35),
-                    decoration: BoxDecoration( borderRadius: BorderRadius.circular(8),color: Colors.white),
-                    child:const Text('Login',style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),)),),
+                  ElevatedButton(onPressed: () async{
+                    await _authenticationController.login(
+                     username: _usernameController.text.trim(),
+                     password: _passwordController.text.trim()); 
+                  },
+                   child: Obx(() {
+                return _authenticationController.isloading.value
+                    ? const CircularProgressIndicator()
+                    : const Text(
+                        'Login',
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
+                      );
+              })),
                   const SizedBox(height: 15),
                   TextButton(onPressed: (){
-                  Get.to(const Register());
+                  Get.to(()=>const Register());
                   },
                   child:const Text('Register',style: TextStyle(color: Colors.white),))
                 ]),
