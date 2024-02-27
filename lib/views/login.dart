@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../controllers/authentecation.dart';
-import 'input_widget.dart';
+import 'widgets/input_widget.dart';
 import 'register.dart';
 class Login extends StatefulWidget {
   const Login({super.key});

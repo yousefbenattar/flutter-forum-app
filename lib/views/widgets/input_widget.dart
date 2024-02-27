@@ -11,7 +11,7 @@ class Input extends StatelessWidget {
     return Container(
       width: MediaQuery.of(context).size.width-MediaQuery.of(context).size.width/8,
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Colors.black12,
         borderRadius: BorderRadius.circular(5),
               ),
     child: TextField(
@@ -19,6 +19,7 @@ class Input extends StatelessWidget {
     obscureText:obscureText,
     decoration: InputDecoration(
       hintText: hintText,
+      border: InputBorder.none
     ),
     ),
     );

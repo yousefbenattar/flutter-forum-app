@@ -1,18 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:forum_app/controllers/feedController.dart';
+import 'package:forum_app/controllers/postcontroller.dart';
 import 'package:get/get.dart';
 import '../constrants.dart';
-import 'postfield.dart';
-import 'posts_list.dart';
+import 'widgets/postfield.dart';
+import 'widgets/posts_data.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
   @override
   State<Home> createState() => _HomeState();
 }
+
+
 class _HomeState extends State<Home> {
-final FeedController _feedController = Get.put(FeedController());
+final PostController _feedController = Get.put(PostController());
 final TextEditingController _textcontroller = TextEditingController();
+ /* @override
+  void initState() {
+    _feedController.getAllPosts();
+    super.initState();
+  }*/
   @override
   Widget build(BuildContext context) {
     return  SafeArea(
@@ -30,7 +37,16 @@ final TextEditingController _textcontroller = TextEditingController();
                   
                   backgroundColor: Colors.black
                 ),
-                onPressed: (){}, child:const Text('Post',style: TextStyle(color: Colors.white),)),
+                onPressed: () async {
+                await  _feedController.createPost(content: _textcontroller.text.trim());
+                _textcontroller.clear();
+                _feedController.getAllPosts();
+                },
+                child:Obx(
+             () {
+                    return _feedController.isLoading.value ? const CircularProgressIndicator(): const Text('Post',style: TextStyle(color: Colors.white),);
+                  }
+                )),
                 box,
                const SizedBox(
                   width: double.infinity,
@@ -41,9 +57,20 @@ final TextEditingController _textcontroller = TextEditingController();
                   ),
                 ),
                 box,
-               const Postlist(),
-               const Postlist(),
-               const Postlist(),
+              Obx(
+                () {
+                   return _feedController.isLoading.value ? const CircularProgressIndicator():
+                  ListView.builder(
+                    shrinkWrap: true,
+                    physics:const NeverScrollableScrollPhysics(),
+                    itemCount: _feedController.posts.value.length,
+                    itemBuilder: ((context, index) {
+                    return PostData(
+                      post: _feedController.posts.value[index],
+                    );
+                  }));
+                 }
+               ),
             ],
             ),
           ),

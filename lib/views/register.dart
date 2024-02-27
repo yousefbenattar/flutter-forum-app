@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'input_widget.dart';
+import 'widgets/input_widget.dart';
 import 'package:get/get.dart';
 import '../controllers/authentecation.dart';
 class Register extends StatefulWidget {
